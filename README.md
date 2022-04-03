@@ -66,7 +66,12 @@ public class CustomStartupClass
     {
         services.Configure<TestSettings>(context.Configuration.Get("TestSettings"));
         services.AddSingleton(new SingletonDependency());
-        services.AddScoped<ScopedDependency>(); // NOTE: A 'scoped' dependency will be shared between all tests in an xUnit "Collection", by default all methods within a test class are part of the same "Collection".
+        services.AddScoped<ScopedDependency>(); // NOTE: A 'scoped' dependency will belong at the 'TestCase' lifetime scope.
+
+        // Use lifetime scopes to share dependencies at a much more granular level
+        services.AddLifetimeScoped<ScopedDependency>(LifetimeScopes.Class); // Share at a class level: all test cases belonging to the same class)
+        services.AddLifetimeScoped<ScopedDependency>(LifetimeScopes.Method); // Share at a method level: all test cases belonging to the same method (i.e. theory test cases)
+        services.AddLifetimeScoped<ScopedDependency>(LifetimeScopes.TestCase); // Share at the test-case level
     }
 
     public void Configure(IMessageSink sink) 
