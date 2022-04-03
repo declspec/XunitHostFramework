@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>XunitHostFramework.LightBDD</AssemblyName>
+    <RootNamespace>XunitHostFramework.LightBDD</RootNamespace>
+    <Description>Extensions to XunitHostFramework to allow it to work with the LightBDD framework</Description>
+    <IsPackable>true</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LightBDD.XUnit2" Version="3.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\XunitHostFramework\XunitHostFramework.csproj" />
+  </ItemGroup>
+
+</Project>
