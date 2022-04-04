@@ -161,10 +161,6 @@ namespace XunitHostFramework.Runners
             if (TryCreateDataDiscoveryFailure(out var discoverySummary))
                 return discoverySummary;
 
-            // TODO: More portable way of getting the XunitHostOptions?
-            var options = Host.Services.GetService<IOptions<XunitHostOptions>>();
-            var allowParallelExecution = options?.Value?.AllowTestParallelization ?? true;
-
             var runFunctions = _testRunners
                 .Select(r => (Func<Task<RunSummary>>)(() => ExecuteRunnerAsync(r)))
                 .ToList();
@@ -172,7 +168,7 @@ namespace XunitHostFramework.Runners
             var summary = await TestExecutor.RunAsync(
                 TestCase.TestMethod.TestClass,
                 runFunctions,
-                allowParallelExecution,
+                Host.Options.AllowTestParallelization,
                 CancellationTokenSource.Token
             );
 

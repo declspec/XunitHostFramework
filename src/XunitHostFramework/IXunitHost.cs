@@ -8,6 +8,7 @@ namespace XunitHostFramework
     {
         IConfiguration Configuration { get; }
         IServiceProvider Services { get; }
+        XunitHostOptions Options { get; }
 
         Task RunAsync(ExecutionDelegate final);
     }

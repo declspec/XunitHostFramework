@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -82,15 +83,18 @@ namespace XunitHostFramework.Internal
         {
             public IConfiguration Configuration { get; }
             public IServiceProvider Services => _services;
+            public XunitHostOptions Options { get; }
 
             private readonly ServiceProvider _services;
             private readonly IReadOnlyList<IExecutionMiddleware> _middleware;
 
             public XunitHost(IConfiguration configuration, ServiceProvider services, IReadOnlyList<IExecutionMiddleware> middleware)
             {
-                Configuration = configuration;
                 _services = services;
                 _middleware = middleware;
+
+                Configuration = configuration;
+                Options = services.GetRequiredService<IOptions<XunitHostOptions>>().Value;
             }
 
             public Task RunAsync(ExecutionDelegate final)

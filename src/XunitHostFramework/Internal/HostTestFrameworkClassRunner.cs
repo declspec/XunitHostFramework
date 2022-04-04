@@ -51,12 +51,8 @@ namespace XunitHostFramework.Internal
                 .Select(method => (Func<Task<RunSummary>>)(() => RunTestMethodAsync(method.Key, (IReflectionMethodInfo)method.Key.Method, method, constructorArguments)))
                 .ToList();
 
-            // Pull the options from the service provider to check for parallelization
-            var options = Host.Services.GetService<IOptions<XunitHostOptions>>();
-            var allowParallelExecution = options?.Value?.AllowTestParallelization ?? true;
-
             // Use the custom executor to handle the parallel execution
-            return TestExecutor.RunAsync(TestClass, tasks, allowParallelExecution, CancellationTokenSource.Token);
+            return TestExecutor.RunAsync(TestClass, tasks, Host.Options.AllowTestParallelization, CancellationTokenSource.Token);
         }
 
         protected virtual DeferredConstructorArguments CreateDeferredConstructorArguments()
