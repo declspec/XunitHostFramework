@@ -76,5 +76,11 @@ namespace XunitHostFramework.Internal
                 return summary;
             }
         }
+
+        protected override void BeforeTestMethodFinished()
+        {
+            base.BeforeTestMethodFinished();
+            Aggregator.Run(Scope.Dispose);
+        }
     }
 }

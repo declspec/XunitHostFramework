@@ -86,13 +86,10 @@ namespace XunitHostFramework.Internal
                 return true;
             }
 
-            if (typeof(ITestOutputHelper).IsAssignableFrom(parameter.ParameterType))
-            {
-                argumentValue = null;
-                return false;
-            }
+            argumentValue = default;
 
-            return base.TryGetConstructorArgument(constructor, index, parameter, out argumentValue);
+            return !typeof(ITestOutputHelper).IsAssignableFrom(parameter.ParameterType)
+                && base.TryGetConstructorArgument(constructor, index, parameter, out argumentValue);
         }
 
         protected virtual Task<RunSummary> RunTestMethodAsync(ITestMethod testMethod, IReflectionMethodInfo method, IEnumerable<IXunitTestCase> testCases, DeferredConstructorArguments constructorArguments)
